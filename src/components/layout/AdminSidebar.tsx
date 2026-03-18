@@ -15,6 +15,8 @@ const links = [
   { href: "/admin/announcements", label: "Announcements", icon: "📢" },
   { href: "/admin/attendance", label: "Attendance", icon: "✅" },
   { href: "/admin/schedule", label: "Schedule", icon: "📅" },
+  { href: "/admin/events", label: "Events", icon: "🎪" },
+  { href: "/admin/competitions", label: "Competitions", icon: "🏆" },
 ];
 
 export default function AdminSidebar() {

@@ -86,21 +86,23 @@ model OrderItem {
 // ── Member Portal ──────────────────────────────────────
 
 model Member {
-  id           String         @id @default(cuid())
-  email        String         @unique
-  passwordHash String
-  firstName    String
-  lastName     String
-  phone        String?
-  beltRank     String         @default("white")
-  stripes      Int            @default(0)
-  approved     Boolean        @default(false)
-  active       Boolean        @default(true)
-  locationSlug String?
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  attendances  Attendance[]
-  beltHistory  BeltProgress[]
+  id                 String              @id @default(cuid())
+  email              String              @unique
+  passwordHash       String
+  firstName          String
+  lastName           String
+  phone              String?
+  beltRank           String              @default("white")
+  stripes            Int                 @default(0)
+  approved           Boolean             @default(false)
+  active             Boolean             @default(true)
+  locationSlug       String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  attendances        Attendance[]
+  beltHistory        BeltProgress[]
+  competitionResults CompetitionResult[]
+  personalGoals      PersonalGoal[]
 }
 
 model Video {
@@ -156,4 +158,46 @@ model ClassSchedule {
   instructor   String
   locationSlug String
   active       Boolean @default(true)
+}
+
+// ── Calendar & Leaderboard ─────────────────────────────
+
+model Event {
+  id           String    @id @default(cuid())
+  title        String
+  description  String?
+  date         DateTime
+  endDate      DateTime?
+  eventType    String // seminar | open-mat | promotion | closure | social | other
+  locationSlug String
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model CompetitionResult {
+  id              String   @id @default(cuid())
+  memberId        String
+  member          Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  competitionName String
+  date            DateTime
+  placement       String // gold | silver | bronze | participant
+  division        String?
+  notes           String?
+  createdAt       DateTime @default(now())
+}
+
+model PersonalGoal {
+  id           String    @id @default(cuid())
+  memberId     String
+  member       Member    @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  title        String
+  targetValue  Int
+  currentValue Int       @default(0)
+  goalType     String // monthly-attendance | weekly-streak | competition | custom
+  startDate    DateTime
+  endDate      DateTime?
+  completed    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }

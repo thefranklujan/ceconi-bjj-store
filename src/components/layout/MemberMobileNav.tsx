@@ -12,6 +12,8 @@ const links = [
   { href: "/members/schedule", label: "Schedule", icon: "📅" },
   { href: "/members/progress", label: "Progress", icon: "🥋" },
   { href: "/members/attendance", label: "Attendance", icon: "✅" },
+  { href: "/members/calendar", label: "Calendar", icon: "📆" },
+  { href: "/members/leaderboard", label: "Leaderboard", icon: "🏆" },
   { href: "/members/profile", label: "Profile", icon: "👤" },
 ];
 
