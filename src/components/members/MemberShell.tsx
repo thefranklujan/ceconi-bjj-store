@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import MemberSidebar from "@/components/layout/MemberSidebar";
+import MemberMobileNav from "@/components/layout/MemberMobileNav";
 
 export default async function MemberShell({
   children,
@@ -16,7 +17,10 @@ export default async function MemberShell({
   return (
     <div className="flex min-h-[calc(100vh-5rem)]">
       <MemberSidebar />
-      <div className="flex-1 p-6 lg:p-8">{children}</div>
+      <div className="flex-1">
+        <MemberMobileNav />
+        <div className="p-4 sm:p-6 lg:p-8">{children}</div>
+      </div>
     </div>
   );
 }
