@@ -54,6 +54,41 @@ export const ORDER_STATUSES = [
   "cancelled",
 ] as const;
 
+// ── Member Portal ──────────────────────────────────────
+
+export const BELT_RANKS = [
+  { value: "white", label: "White", color: "#FFFFFF" },
+  { value: "blue", label: "Blue", color: "#1E40AF" },
+  { value: "purple", label: "Purple", color: "#7C3AED" },
+  { value: "brown", label: "Brown", color: "#92400E" },
+  { value: "black", label: "Black", color: "#1a1a1a" },
+] as const;
+
+export const CLASS_TYPES = [
+  { value: "gi", label: "Gi" },
+  { value: "nogi", label: "No-Gi" },
+  { value: "kids", label: "Kids" },
+  { value: "fundamentals", label: "Fundamentals" },
+  { value: "competition", label: "Competition" },
+  { value: "womens", label: "Women's" },
+  { value: "self-defense", label: "Self-Defense" },
+] as const;
+
+export const DAYS_OF_WEEK = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+] as const;
+
+export const LOCATIONS = [
+  { value: "magnolia", label: "Magnolia" },
+  { value: "cypress", label: "Cypress" },
+] as const;
+
 export const CATEGORIES = [
   { name: "Gis", slug: "gis", sortOrder: 1 },
   { name: "Rash Guards", slug: "rash-guards", sortOrder: 2 },

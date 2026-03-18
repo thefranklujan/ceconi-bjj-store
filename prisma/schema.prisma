@@ -82,3 +82,78 @@ model OrderItem {
   variantId String
   variant   ProductVariant @relation(fields: [variantId], references: [id])
 }
+
+// ── Member Portal ──────────────────────────────────────
+
+model Member {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  phone        String?
+  beltRank     String         @default("white")
+  stripes      Int            @default(0)
+  approved     Boolean        @default(false)
+  active       Boolean        @default(true)
+  locationSlug String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  attendances  Attendance[]
+  beltHistory  BeltProgress[]
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  embedUrl    String
+  classType   String
+  classDate   DateTime
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model Attendance {
+  id           String   @id @default(cuid())
+  memberId     String
+  member       Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  classDate    DateTime
+  classType    String
+  locationSlug String
+  checkedInAt  DateTime @default(now())
+
+  @@unique([memberId, classDate, classType])
+}
+
+model BeltProgress {
+  id        String   @id @default(cuid())
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  beltRank  String
+  stripes   Int
+  note      String?
+  awardedAt DateTime @default(now())
+  awardedBy String?
+  createdAt DateTime @default(now())
+}
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  pinned      Boolean  @default(false)
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+}
+
+model ClassSchedule {
+  id           String  @id @default(cuid())
+  dayOfWeek    Int
+  startTime    String
+  endTime      String
+  classType    String
+  instructor   String
+  locationSlug String
+  active       Boolean @default(true)
+}

@@ -4,8 +4,9 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function AdminLoginPage() {
+export default function MemberLoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,7 +18,7 @@ export default function AdminLoginPage() {
     setError("");
     setLoading(true);
 
-    const result = await signIn("admin-login", {
+    const result = await signIn("member-login", {
       email,
       password,
       redirect: false,
@@ -26,14 +27,14 @@ export default function AdminLoginPage() {
     setLoading(false);
 
     if (result?.error) {
-      setError("Invalid email or password");
+      setError("Invalid email or password. Make sure your account has been approved.");
     } else {
-      router.push("/admin");
+      router.push("/members");
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-brand-black px-4">
+    <div className="min-h-[80vh] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Image
@@ -43,7 +44,7 @@ export default function AdminLoginPage() {
             height={75}
             className="mx-auto mb-4"
           />
-          <p className="text-gray-400">Admin Dashboard</p>
+          <p className="text-gray-400">Member Login</p>
         </div>
 
         <form
@@ -63,7 +64,7 @@ export default function AdminLoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-brand-black border border-brand-gray rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand-teal transition"
-              placeholder="admin@ceconibjj.com"
+              placeholder="your@email.com"
               required
             />
           </div>
@@ -87,6 +88,13 @@ export default function AdminLoginPage() {
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
+
+          <p className="text-center text-sm text-gray-400">
+            Don&apos;t have an account?{" "}
+            <Link href="/members/register" className="text-brand-teal hover:underline">
+              Register here
+            </Link>
+          </p>
         </form>
       </div>
     </div>

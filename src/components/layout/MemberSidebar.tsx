@@ -6,31 +6,28 @@ import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/admin", label: "Dashboard", icon: "📊" },
-  { href: "/admin/products", label: "Products", icon: "📦" },
-  { href: "/admin/orders", label: "Orders", icon: "🧾" },
-  { href: "/admin/inventory", label: "Inventory", icon: "📋" },
-  { href: "/admin/members", label: "Members", icon: "👥" },
-  { href: "/admin/videos", label: "Videos", icon: "🎥" },
-  { href: "/admin/announcements", label: "Announcements", icon: "📢" },
-  { href: "/admin/attendance", label: "Attendance", icon: "✅" },
-  { href: "/admin/schedule", label: "Schedule", icon: "📅" },
+  { href: "/members", label: "Dashboard", icon: "🏠" },
+  { href: "/members/videos", label: "Videos", icon: "🎥" },
+  { href: "/members/schedule", label: "Schedule", icon: "📅" },
+  { href: "/members/progress", label: "Progress", icon: "🥋" },
+  { href: "/members/attendance", label: "Attendance", icon: "✅" },
+  { href: "/members/profile", label: "Profile", icon: "👤" },
 ];
 
-export default function AdminSidebar() {
+export default function MemberSidebar() {
   const pathname = usePathname();
 
   return (
     <aside className="w-64 bg-brand-dark border-r border-brand-gray hidden lg:block">
       <div className="p-6">
         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
-          Admin Panel
+          Member Portal
         </h2>
         <nav className="space-y-1">
           {links.map((link) => {
             const isActive =
-              link.href === "/admin"
-                ? pathname === "/admin"
+              link.href === "/members"
+                ? pathname === "/members"
                 : pathname.startsWith(link.href);
             return (
               <Link
@@ -59,7 +56,7 @@ export default function AdminSidebar() {
             Back to Store
           </Link>
           <button
-            onClick={() => signOut({ callbackUrl: "/admin/login" })}
+            onClick={() => signOut({ callbackUrl: "/members/login" })}
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-red-400 hover:bg-brand-gray/50 transition w-full"
           >
             <span>🚪</span>

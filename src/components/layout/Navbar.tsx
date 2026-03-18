@@ -33,6 +33,9 @@ export default function Navbar() {
             <Link href="/products" className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
               Shop
             </Link>
+            <Link href="/members/login" className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
+              Members
+            </Link>
             <div className="relative group">
               <button className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
                 Categories
@@ -92,6 +95,9 @@ export default function Navbar() {
             </Link>
             <Link href="/products" className="block py-2 text-gray-300 hover:text-brand-teal uppercase tracking-wider text-sm font-medium" onClick={() => setMenuOpen(false)}>
               Shop All
+            </Link>
+            <Link href="/members/login" className="block py-2 text-gray-300 hover:text-brand-teal uppercase tracking-wider text-sm font-medium" onClick={() => setMenuOpen(false)}>
+              Members
             </Link>
             {["Gis", "Rash Guards", "Shorts", "T-Shirts", "Hoodies", "Belts", "Patches", "Accessories"].map(
               (cat) => (
