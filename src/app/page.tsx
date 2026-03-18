@@ -158,13 +158,6 @@ export default async function HomePage() {
                 key={loc.name}
                 className="bg-black/50 backdrop-blur border border-white/10 rounded p-8 text-center"
               >
-                <Image
-                  src="/square-logo.svg"
-                  alt="Ceconi BJJ"
-                  width={60}
-                  height={60}
-                  className="mx-auto mb-4"
-                />
                 <h3 className="text-xl font-bold text-brand-teal mb-2 uppercase tracking-wider">{loc.name}</h3>
                 <p className="text-gray-300">{loc.address}</p>
                 <p className="text-brand-teal mt-3 font-medium">{BRAND.phone}</p>

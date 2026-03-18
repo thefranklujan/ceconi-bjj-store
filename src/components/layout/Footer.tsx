@@ -10,13 +10,6 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Image
-              src="/square-logo.svg"
-              alt="Ceconi BJJ"
-              width={50}
-              height={50}
-              className="mb-3"
-            />
-            <Image
               src="/logo-white.svg"
               alt="Ceconi BJJ"
               width={160}
