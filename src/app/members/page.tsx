@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import MemberShell from "@/components/members/MemberShell";
 import BeltDisplay from "@/components/members/BeltDisplay";
 import Link from "next/link";
+import { formatTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -139,7 +140,7 @@ export default async function MemberDashboardPage() {
                     </p>
                   </div>
                   <p className="text-brand-teal font-semibold text-sm">
-                    {cls.startTime} - {cls.endTime}
+                    {formatTime(cls.startTime)} - {formatTime(cls.endTime)}
                   </p>
                 </div>
               ))}

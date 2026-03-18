@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import MemberShell from "@/components/members/MemberShell";
 import Link from "next/link";
+import { formatTime } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -95,7 +96,7 @@ export default async function MemberSchedulePage({
                     >
                       <div className="flex items-center gap-4">
                         <div className="text-brand-teal font-semibold text-sm min-w-[120px]">
-                          {cls.startTime} - {cls.endTime}
+                          {formatTime(cls.startTime)} - {formatTime(cls.endTime)}
                         </div>
                         <div>
                           <p className="text-white font-medium">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import { formatTime } from "@/lib/utils";
 
 interface ClassScheduleItem {
   id: string;
@@ -453,7 +454,7 @@ export default function CalendarGrid({
                                   {cls.locationSlug === "magnolia" ? "Magnolia" : "Cypress"}
                                 </span>
                               </div>
-                              <p className="text-gray-500 text-xs mt-1">{cls.instructor} &middot; {cls.startTime} - {cls.endTime}</p>
+                              <p className="text-gray-500 text-xs mt-1">{cls.instructor} &middot; {formatTime(cls.startTime)} - {formatTime(cls.endTime)}</p>
                             </div>
                           </div>
 

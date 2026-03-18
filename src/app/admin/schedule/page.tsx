@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import AdminShell from "@/components/admin/AdminShell";
 import { CLASS_TYPES, DAYS_OF_WEEK, LOCATIONS } from "@/lib/constants";
+import { formatTime } from "@/lib/utils";
 
 interface ScheduleEntry {
   id: string;
@@ -221,7 +222,7 @@ export default function AdminSchedulePage() {
                         {dayEntries.map((entry) => (
                           <tr key={entry.id} className="border-b border-brand-gray/50 hover:bg-brand-gray/20 transition">
                             <td className="px-4 py-2 text-sm text-brand-teal font-medium">
-                              {entry.startTime} - {entry.endTime}
+                              {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                             </td>
                             <td className="px-4 py-2 text-sm text-white">{classLabel(entry.classType)}</td>
                             <td className="px-4 py-2 text-sm text-gray-300">{entry.instructor}</td>
