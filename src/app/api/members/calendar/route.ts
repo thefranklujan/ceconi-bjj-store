@@ -20,12 +20,10 @@ export async function GET(request: NextRequest) {
   const classType = searchParams.get("classType") || "";
   const eventType = searchParams.get("eventType") || "";
 
-  // Build schedule filter
   const scheduleWhere: Record<string, unknown> = { active: true };
   if (location) scheduleWhere.locationSlug = location;
   if (classType) scheduleWhere.classType = classType;
 
-  // Build event filter
   const startOfMonth = new Date(year, month - 1, 1);
   const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
 
@@ -36,28 +34,62 @@ export async function GET(request: NextRequest) {
   if (location) eventWhere.locationSlug = location;
   if (eventType) eventWhere.eventType = eventType;
 
-  // Build attendance filter
-  const attendanceWhere: Record<string, unknown> = {
+  // My attendance
+  const myAttendanceWhere: Record<string, unknown> = {
     classDate: { gte: startOfMonth, lte: endOfMonth },
   };
-  if (memberId) attendanceWhere.memberId = memberId;
+  if (memberId) myAttendanceWhere.memberId = memberId;
 
-  const [schedule, attendance, events] = await Promise.all([
-    prisma.classSchedule.findMany({
-      where: scheduleWhere,
-      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
-    }),
-    memberId
-      ? prisma.attendance.findMany({
-          where: attendanceWhere,
-          orderBy: { classDate: "asc" },
-        })
-      : Promise.resolve([]),
-    prisma.event.findMany({
-      where: eventWhere,
-      orderBy: { date: "asc" },
-    }),
-  ]);
+  // All members' attendance (for showing who went to class)
+  const allAttendanceWhere: Record<string, unknown> = {
+    classDate: { gte: startOfMonth, lte: endOfMonth },
+  };
+  if (location) allAttendanceWhere.locationSlug = location;
+  if (classType) allAttendanceWhere.classType = classType;
 
-  return NextResponse.json({ schedule, attendance, events });
+  // Commitments for the month
+  const commitmentWhere: Record<string, unknown> = {
+    classDate: { gte: startOfMonth, lte: endOfMonth },
+  };
+  if (location) commitmentWhere.locationSlug = location;
+  if (classType) commitmentWhere.classType = classType;
+
+  const [schedule, attendance, events, allAttendance, commitments] =
+    await Promise.all([
+      prisma.classSchedule.findMany({
+        where: scheduleWhere,
+        orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
+      }),
+      memberId
+        ? prisma.attendance.findMany({
+            where: myAttendanceWhere,
+            orderBy: { classDate: "asc" },
+          })
+        : Promise.resolve([]),
+      prisma.event.findMany({
+        where: eventWhere,
+        orderBy: { date: "asc" },
+      }),
+      prisma.attendance.findMany({
+        where: allAttendanceWhere,
+        orderBy: { classDate: "asc" },
+        include: {
+          member: { select: { id: true, firstName: true, lastName: true, beltRank: true } },
+        },
+      }),
+      prisma.scheduleCommitment.findMany({
+        where: commitmentWhere,
+        include: {
+          member: { select: { id: true, firstName: true, lastName: true, beltRank: true } },
+        },
+      }),
+    ]);
+
+  return NextResponse.json({
+    schedule,
+    attendance,
+    events,
+    allAttendance,
+    commitments,
+  });
 }

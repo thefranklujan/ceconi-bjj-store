@@ -101,8 +101,9 @@ model Member {
   updatedAt          DateTime            @updatedAt
   attendances        Attendance[]
   beltHistory        BeltProgress[]
-  competitionResults CompetitionResult[]
-  personalGoals      PersonalGoal[]
+  competitionResults  CompetitionResult[]
+  personalGoals       PersonalGoal[]
+  scheduleCommitments ScheduleCommitment[]
 }
 
 model Video {
@@ -158,6 +159,18 @@ model ClassSchedule {
   instructor   String
   locationSlug String
   active       Boolean @default(true)
+}
+
+model ScheduleCommitment {
+  id           String   @id @default(cuid())
+  memberId     String
+  member       Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  classDate    DateTime
+  classType    String
+  locationSlug String
+  createdAt    DateTime @default(now())
+
+  @@unique([memberId, classDate, classType])
 }
 
 // ── Calendar & Leaderboard ─────────────────────────────

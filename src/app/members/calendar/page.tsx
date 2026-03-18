@@ -9,37 +9,59 @@ export const dynamic = "force-dynamic";
 
 export default async function MemberCalendarPage() {
   const session = await getServerSession(authOptions);
-  const memberId = session?.user?.memberId;
+  const memberId = session?.user?.memberId ?? null;
 
   const now = new Date();
-  const month = now.getMonth() + 1; // 1-12
+  const month = now.getMonth() + 1;
   const year = now.getFullYear();
 
   const startOfMonth = new Date(year, month - 1, 1);
   const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999);
 
-  const [schedule, attendance, events] = await Promise.all([
-    prisma.classSchedule.findMany({
-      where: { active: true },
-      orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
-    }),
-    memberId
-      ? prisma.attendance.findMany({
-          where: {
-            memberId,
-            classDate: { gte: startOfMonth, lte: endOfMonth },
+  const [schedule, attendance, events, allAttendance, commitments] =
+    await Promise.all([
+      prisma.classSchedule.findMany({
+        where: { active: true },
+        orderBy: [{ dayOfWeek: "asc" }, { startTime: "asc" }],
+      }),
+      memberId
+        ? prisma.attendance.findMany({
+            where: {
+              memberId,
+              classDate: { gte: startOfMonth, lte: endOfMonth },
+            },
+            orderBy: { classDate: "asc" },
+          })
+        : [],
+      prisma.event.findMany({
+        where: {
+          active: true,
+          date: { gte: startOfMonth, lte: endOfMonth },
+        },
+        orderBy: { date: "asc" },
+      }),
+      prisma.attendance.findMany({
+        where: {
+          classDate: { gte: startOfMonth, lte: endOfMonth },
+        },
+        orderBy: { classDate: "asc" },
+        include: {
+          member: {
+            select: { id: true, firstName: true, lastName: true, beltRank: true },
           },
-          orderBy: { classDate: "asc" },
-        })
-      : [],
-    prisma.event.findMany({
-      where: {
-        active: true,
-        date: { gte: startOfMonth, lte: endOfMonth },
-      },
-      orderBy: { date: "asc" },
-    }),
-  ]);
+        },
+      }),
+      prisma.scheduleCommitment.findMany({
+        where: {
+          classDate: { gte: startOfMonth, lte: endOfMonth },
+        },
+        include: {
+          member: {
+            select: { id: true, firstName: true, lastName: true, beltRank: true },
+          },
+        },
+      }),
+    ]);
 
   return (
     <MemberShell>
@@ -52,8 +74,11 @@ export default async function MemberCalendarPage() {
           initialSchedule={JSON.parse(JSON.stringify(schedule))}
           initialAttendance={JSON.parse(JSON.stringify(attendance))}
           initialEvents={JSON.parse(JSON.stringify(events))}
+          initialAllAttendance={JSON.parse(JSON.stringify(allAttendance))}
+          initialCommitments={JSON.parse(JSON.stringify(commitments))}
           initialMonth={month}
           initialYear={year}
+          currentMemberId={memberId}
         />
       </div>
     </MemberShell>
