@@ -1,0 +1,22 @@
+name: Notify Ada
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Message Ada on Telegram
+        run: |
+          COMMIT_MSG=$(echo "${{ github.event.head_commit.message }}" | head -3)
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.ADA_TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.ADA_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d text="🚀 *New Deploy*
+*Repo:* ${{ github.repository }}
+*Branch:* ${{ github.ref_name }}
+*By:* ${{ github.actor }}
+*Commit:* ${COMMIT_MSG}
+
+Please verify the Vercel deployment and beta test. Report results back to Frank."
