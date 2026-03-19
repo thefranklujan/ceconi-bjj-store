@@ -124,6 +124,89 @@ export default function TechniqueCurriculum({
           </span>
         </div>
 
+        {/* ── Filters & Search ─────────────────────────────── */}
+        <div className="mt-4 space-y-3 border-t border-brand-gray/30 pt-4">
+          {/* Search */}
+          <div className="relative">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search techniques..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-brand-black/50 border border-brand-gray rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-brand-teal/50"
+            />
+            {search && (
+              <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          {/* Category filter pills */}
+          <div>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">Category</p>
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                onClick={() => setFilterCategory("all")}
+                className={`text-xs px-3 py-1 rounded-full font-medium transition ${
+                  filterCategory === "all"
+                    ? "bg-brand-teal text-brand-black"
+                    : "bg-brand-black/50 border border-brand-gray text-gray-300 hover:border-brand-teal/50"
+                }`}
+              >
+                All
+              </button>
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilterCategory(filterCategory === cat ? "all" : cat)}
+                  className={`text-xs px-3 py-1 rounded-full font-medium transition ${
+                    filterCategory === cat
+                      ? "bg-brand-teal text-brand-black"
+                      : "bg-brand-black/50 border border-brand-gray text-gray-300 hover:border-brand-teal/50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Status filter */}
+          <div>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">Status</p>
+            <div className="flex gap-1.5">
+              {([["all", "All"], ["completed", "Completed"], ["remaining", "Remaining"]] as const).map(([val, label]) => (
+                <button
+                  key={val}
+                  onClick={() => setFilterStatus(val)}
+                  className={`text-xs px-3 py-1 rounded-full font-medium transition ${
+                    filterStatus === val
+                      ? "bg-brand-teal text-brand-black"
+                      : "bg-brand-black/50 border border-brand-gray text-gray-300 hover:border-brand-teal/50"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {hasActiveFilters && (
+            <button
+              onClick={() => { setSearch(""); setFilterCategory("all"); setFilterStatus("all"); }}
+              className="text-xs text-gray-400 hover:text-brand-teal transition"
+            >
+              Clear all filters
+            </button>
+          )}
+        </div>
+
         {/* Technique checklist for next milestone */}
         <div className="mt-4 space-y-1.5">
           {nextMilestone.techniques.map((tech) => {
@@ -151,89 +234,6 @@ export default function TechniqueCurriculum({
             );
           })}
         </div>
-      </div>
-
-      {/* ── Filters & Search ─────────────────────────────── */}
-      <div className="bg-brand-dark border border-brand-gray rounded-lg p-4 space-y-3">
-        {/* Search */}
-        <div className="relative">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search techniques..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-brand-black/50 border border-brand-gray rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-brand-teal/50"
-          />
-          {search && (
-            <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          )}
-        </div>
-
-        {/* Category filter pills */}
-        <div>
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">Category</p>
-          <div className="flex flex-wrap gap-1.5">
-            <button
-              onClick={() => setFilterCategory("all")}
-              className={`text-xs px-3 py-1 rounded-full font-medium transition ${
-                filterCategory === "all"
-                  ? "bg-brand-teal text-brand-black"
-                  : "bg-brand-black/50 border border-brand-gray text-gray-300 hover:border-brand-teal/50"
-              }`}
-            >
-              All
-            </button>
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilterCategory(filterCategory === cat ? "all" : cat)}
-                className={`text-xs px-3 py-1 rounded-full font-medium transition ${
-                  filterCategory === cat
-                    ? "bg-brand-teal text-brand-black"
-                    : "bg-brand-black/50 border border-brand-gray text-gray-300 hover:border-brand-teal/50"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Status filter */}
-        <div>
-          <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1.5">Status</p>
-          <div className="flex gap-1.5">
-            {([["all", "All"], ["completed", "Completed"], ["remaining", "Remaining"]] as const).map(([val, label]) => (
-              <button
-                key={val}
-                onClick={() => setFilterStatus(val)}
-                className={`text-xs px-3 py-1 rounded-full font-medium transition ${
-                  filterStatus === val
-                    ? "bg-brand-teal text-brand-black"
-                    : "bg-brand-black/50 border border-brand-gray text-gray-300 hover:border-brand-teal/50"
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {hasActiveFilters && (
-          <button
-            onClick={() => { setSearch(""); setFilterCategory("all"); setFilterStatus("all"); }}
-            className="text-xs text-gray-400 hover:text-brand-teal transition"
-          >
-            Clear all filters
-          </button>
-        )}
       </div>
 
       {/* ── Full Curriculum Chart ───────────────────────── */}
