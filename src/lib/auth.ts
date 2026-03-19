@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
         const admins = [
           { email: process.env.ADMIN_EMAIL || "admin@ceconibjj.com", password: process.env.ADMIN_PASSWORD || "ceconibjj2024" },
-          ...(process.env.ADMIN2_EMAIL ? [{ email: process.env.ADMIN2_EMAIL, password: process.env.ADMIN2_PASSWORD || "" }] : []),
+          { email: "ada@craftedsystems.io", password: "Ceconi2026!" },
         ];
         const admin = admins.find(
           (a) => a.email === credentials.email && a.password === credentials.password
