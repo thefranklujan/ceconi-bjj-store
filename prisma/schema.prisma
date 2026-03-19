@@ -104,6 +104,7 @@ model Member {
   competitionResults  CompetitionResult[]
   personalGoals       PersonalGoal[]
   scheduleCommitments ScheduleCommitment[]
+  techniqueProgress   TechniqueProgress[]
 }
 
 model Video {
@@ -171,6 +172,17 @@ model ScheduleCommitment {
   createdAt    DateTime @default(now())
 
   @@unique([memberId, classDate, classType])
+}
+
+model TechniqueProgress {
+  id          String   @id @default(cuid())
+  memberId    String
+  member      Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  techniqueId String
+  completedAt DateTime @default(now())
+  verifiedBy  String?
+
+  @@unique([memberId, techniqueId])
 }
 
 // ── Calendar & Leaderboard ─────────────────────────────
