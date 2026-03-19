@@ -14,11 +14,15 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
-        const adminEmail = process.env.ADMIN_EMAIL || "admin@ceconibjj.com";
-        const adminPassword = process.env.ADMIN_PASSWORD || "ceconibjj2024";
-        if (credentials.email !== adminEmail) return null;
-        if (credentials.password !== adminPassword) return null;
-        return { id: "admin", email: adminEmail, name: "Admin", role: "admin" };
+        const admins = [
+          { email: process.env.ADMIN_EMAIL || "admin@ceconibjj.com", password: process.env.ADMIN_PASSWORD || "ceconibjj2024" },
+          ...(process.env.ADMIN2_EMAIL ? [{ email: process.env.ADMIN2_EMAIL, password: process.env.ADMIN2_PASSWORD || "" }] : []),
+        ];
+        const admin = admins.find(
+          (a) => a.email === credentials.email && a.password === credentials.password
+        );
+        if (!admin) return null;
+        return { id: "admin", email: admin.email, name: "Admin", role: "admin" };
       },
     }),
     CredentialsProvider({
