@@ -23,7 +23,7 @@ export default function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-brand-dark border-r border-brand-gray hidden lg:block">
+    <aside className="w-64 bg-brand-dark border-r border-brand-gray hidden lg:block fixed top-[5rem] h-[calc(100vh-5rem)] overflow-hidden z-30">
       <div className="p-6">
         <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
           Admin Panel

@@ -18,7 +18,7 @@ export default async function MemberShell({
   return (
     <div className="flex min-h-[calc(100vh-5rem)]">
       <MemberSidebar />
-      <div className="flex-1">
+      <div className="flex-1 lg:ml-64">
         <MemberMobileNav />
         <div className="p-4 sm:p-6 lg:p-8">{children}</div>
       </div>

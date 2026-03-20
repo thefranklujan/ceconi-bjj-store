@@ -14,7 +14,7 @@ export default async function AdminShell({
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       <AdminSidebar />
-      <div className="flex-1 p-6 lg:p-8">{children}</div>
+      <div className="flex-1 lg:ml-64 p-6 lg:p-8">{children}</div>
     </div>
   );
 }

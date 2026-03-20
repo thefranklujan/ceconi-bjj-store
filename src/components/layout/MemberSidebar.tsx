@@ -24,7 +24,7 @@ export default function MemberSidebar() {
   return (
     <aside
       className={cn(
-        "bg-brand-dark border-r border-brand-gray hidden lg:block sticky top-[5rem] h-[calc(100vh-5rem)] overflow-y-auto transition-all duration-300",
+        "bg-brand-dark border-r border-brand-gray hidden lg:block fixed top-[5rem] h-[calc(100vh-5rem)] overflow-hidden transition-all duration-300 z-30",
         collapsed ? "w-16" : "w-64"
       )}
     >
