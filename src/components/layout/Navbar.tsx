@@ -18,7 +18,7 @@ export default function Navbar() {
     pathname !== "/members/register";
 
   return (
-    <nav className="sticky top-0 z-50 bg-brand-black/95 backdrop-blur border-b border-brand-gray">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-brand-black/95 backdrop-blur border-b border-brand-gray">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
