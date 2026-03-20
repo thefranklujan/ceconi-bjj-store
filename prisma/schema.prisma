@@ -159,6 +159,7 @@ model ClassSchedule {
   classType    String
   instructor   String
   locationSlug String
+  topic        String?
   active       Boolean @default(true)
 }
 

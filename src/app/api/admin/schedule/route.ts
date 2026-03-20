@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { dayOfWeek, startTime, endTime, classType, instructor, locationSlug } = body;
+  const { dayOfWeek, startTime, endTime, classType, instructor, locationSlug, topic } = body;
 
   if (
     typeof dayOfWeek !== "number" ||
@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
       classType,
       instructor,
       locationSlug,
+      topic: topic || null,
     },
   });
 

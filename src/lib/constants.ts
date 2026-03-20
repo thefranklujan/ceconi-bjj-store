@@ -89,6 +89,28 @@ export const LOCATIONS = [
   { value: "cypress", label: "Cypress" },
 ] as const;
 
+export const SCHEDULE_TOPICS = [
+  "Takedowns",
+  "Guard Passing",
+  "Closed Guard",
+  "Open Guard",
+  "Half Guard",
+  "Mount",
+  "Side Control",
+  "Back Control",
+  "Submissions",
+  "Sweeps",
+  "Escapes",
+  "Self Defense",
+  "Leg Locks",
+  "Chokes",
+  "Arm Locks",
+  "Drills & Conditioning",
+  "Competition Prep",
+  "Free Roll",
+  "Review / Q&A",
+] as const;
+
 export const CATEGORIES = [
   { name: "Gis", slug: "gis", sortOrder: 1 },
   { name: "Rash Guards", slug: "rash-guards", sortOrder: 2 },

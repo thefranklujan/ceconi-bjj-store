@@ -3,15 +3,27 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import MemberShell from "@/components/members/MemberShell";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-export default async function MemberAttendancePage() {
+export default async function MemberAttendancePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string }>;
+}) {
+  const params = await searchParams;
   const session = await getServerSession(authOptions);
   const memberId = session?.user?.memberId;
+  const filter = params.filter || "all";
 
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const attendanceWhere: Record<string, unknown> = memberId ? { memberId } : {};
+  if (filter === "month" && memberId) {
+    attendanceWhere.classDate = { gte: startOfMonth };
+  }
 
   const [totalCount, monthlyCount, attendance] = await Promise.all([
     memberId ? prisma.attendance.count({ where: { memberId } }) : 0,
@@ -22,9 +34,9 @@ export default async function MemberAttendancePage() {
       : 0,
     memberId
       ? prisma.attendance.findMany({
-          where: { memberId },
+          where: attendanceWhere,
           orderBy: { classDate: "desc" },
-          take: 50,
+          take: 100,
         })
       : [],
   ]);
@@ -74,18 +86,24 @@ export default async function MemberAttendancePage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <a href="#recent-classes" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+          <Link href="/members/attendance?filter=all" className={cn(
+            "bg-brand-dark border rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer",
+            filter === "all" ? "border-brand-teal" : "border-brand-gray"
+          )}>
             <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Total Classes
             </p>
             <p className="text-3xl font-bold text-brand-teal">{totalCount}</p>
-          </a>
-          <a href="#recent-classes" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+          </Link>
+          <Link href="/members/attendance?filter=month" className={cn(
+            "bg-brand-dark border rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer",
+            filter === "month" ? "border-brand-teal" : "border-brand-gray"
+          )}>
             <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               This Month
             </p>
             <p className="text-3xl font-bold text-white">{monthlyCount}</p>
-          </a>
+          </Link>
           <Link href="/members/leaderboard" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
             <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Week Streak
@@ -98,10 +116,13 @@ export default async function MemberAttendancePage() {
 
         {/* Attendance List */}
         <div id="recent-classes" className="bg-brand-dark border border-brand-gray rounded-lg overflow-hidden scroll-mt-24">
-          <div className="px-6 py-4 border-b border-brand-gray">
+          <div className="px-6 py-4 border-b border-brand-gray flex items-center justify-between">
             <h2 className="text-lg font-semibold text-white uppercase tracking-wider">
-              Recent Classes
+              {filter === "month" ? "This Month's Classes" : "All Classes"}
             </h2>
+            <span className="text-sm text-gray-400">
+              {attendance.length} {attendance.length === 1 ? "class" : "classes"}
+            </span>
           </div>
 
           {attendance.length > 0 ? (

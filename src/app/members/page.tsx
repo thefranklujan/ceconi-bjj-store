@@ -86,7 +86,7 @@ export default async function MemberDashboardPage() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Link href="/members/attendance" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+          <Link href="/members/attendance?filter=month" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
             <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Classes This Month
             </p>
@@ -133,10 +133,13 @@ export default async function MemberDashboardPage() {
                   className="flex items-center justify-between py-3 border-b border-brand-gray last:border-0"
                 >
                   <div>
-                    <p className="text-white font-medium">{cls.classType}</p>
+                    <p className="text-white font-medium capitalize">{cls.classType}</p>
                     <p className="text-gray-500 text-sm">
                       {cls.instructor} &middot;{" "}
                       <span className="capitalize">{cls.locationSlug}</span>
+                      {cls.topic && (
+                        <span className="text-brand-teal/70"> · {cls.topic}</span>
+                      )}
                     </p>
                   </div>
                   <p className="text-brand-teal font-semibold text-sm">

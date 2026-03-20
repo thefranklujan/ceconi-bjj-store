@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import AdminShell from "@/components/admin/AdminShell";
-import { CLASS_TYPES, DAYS_OF_WEEK, LOCATIONS } from "@/lib/constants";
+import { CLASS_TYPES, DAYS_OF_WEEK, LOCATIONS, SCHEDULE_TOPICS } from "@/lib/constants";
 import { formatTime } from "@/lib/utils";
 
 interface ScheduleEntry {
@@ -13,6 +13,7 @@ interface ScheduleEntry {
   classType: string;
   instructor: string;
   locationSlug: string;
+  topic: string | null;
   active: boolean;
 }
 
@@ -27,6 +28,7 @@ export default function AdminSchedulePage() {
   const [classType, setClassType] = useState<string>(CLASS_TYPES[0].value);
   const [instructor, setInstructor] = useState("");
   const [locationSlug, setLocationSlug] = useState<string>(LOCATIONS[0].value);
+  const [topic, setTopic] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(false);
 
@@ -57,11 +59,13 @@ export default function AdminSchedulePage() {
         classType,
         instructor,
         locationSlug,
+        topic: topic || null,
       }),
     });
 
     if (res.ok) {
       setInstructor("");
+      setTopic("");
       setShowForm(false);
       loadSchedule();
     }
@@ -180,6 +184,21 @@ export default function AdminSchedulePage() {
                   ))}
                 </select>
               </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-1">Topic (Optional)</label>
+                <select
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                  className="w-full bg-brand-gray border border-brand-gray rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-brand-teal"
+                >
+                  <option value="">— No Topic —</option>
+                  {SCHEDULE_TOPICS.map((t) => (
+                    <option key={t} value={t}>
+                      {t}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="md:col-span-3">
                 <button
                   type="submit"
@@ -215,6 +234,7 @@ export default function AdminSchedulePage() {
                           <th className="text-left text-xs text-gray-400 uppercase tracking-wider px-4 py-2">Class</th>
                           <th className="text-left text-xs text-gray-400 uppercase tracking-wider px-4 py-2">Instructor</th>
                           <th className="text-left text-xs text-gray-400 uppercase tracking-wider px-4 py-2">Location</th>
+                          <th className="text-left text-xs text-gray-400 uppercase tracking-wider px-4 py-2">Topic</th>
                           <th className="text-right text-xs text-gray-400 uppercase tracking-wider px-4 py-2">Actions</th>
                         </tr>
                       </thead>
@@ -227,6 +247,7 @@ export default function AdminSchedulePage() {
                             <td className="px-4 py-2 text-sm text-white">{classLabel(entry.classType)}</td>
                             <td className="px-4 py-2 text-sm text-gray-300">{entry.instructor}</td>
                             <td className="px-4 py-2 text-sm text-gray-400">{locLabel(entry.locationSlug)}</td>
+                            <td className="px-4 py-2 text-sm text-gray-400">{entry.topic || "—"}</td>
                             <td className="px-4 py-2 text-right">
                               <button
                                 onClick={() => handleDelete(entry.id)}

@@ -26,9 +26,9 @@ export default function Navbar() {
             <Image
               src="/logo-white.svg"
               alt="Ceconi BJJ"
-              width={180}
-              height={54}
-              className="h-12 w-auto"
+              width={270}
+              height={81}
+              className="h-[72px] w-auto"
               priority
             />
           </Link>

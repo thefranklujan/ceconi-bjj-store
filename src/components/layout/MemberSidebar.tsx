@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -18,13 +19,40 @@ const links = [
 
 export default function MemberSidebar() {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <aside className="w-64 bg-brand-dark border-r border-brand-gray hidden lg:block">
-      <div className="p-6">
-        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
-          Member Portal
-        </h2>
+    <aside
+      className={cn(
+        "bg-brand-dark border-r border-brand-gray hidden lg:block sticky top-[5rem] h-[calc(100vh-5rem)] overflow-y-auto transition-all duration-300",
+        collapsed ? "w-16" : "w-64"
+      )}
+    >
+      <div className={cn("p-6", collapsed && "p-3")}>
+        {/* Collapse toggle */}
+        <div className={cn("flex items-center mb-4", collapsed ? "justify-center" : "justify-between")}>
+          {!collapsed && (
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">
+              Member Portal
+            </h2>
+          )}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-gray-400 hover:text-brand-teal transition p-1 rounded hover:bg-brand-gray/50"
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            {collapsed ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7M19 19l-7-7 7-7" />
+              </svg>
+            )}
+          </button>
+        </div>
+
         <nav className="space-y-1">
           {links.map((link) => {
             const isActive =
@@ -35,15 +63,17 @@ export default function MemberSidebar() {
               <Link
                 key={link.href}
                 href={link.href}
+                title={collapsed ? link.label : undefined}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition",
+                  "flex items-center gap-3 rounded-lg text-sm transition",
+                  collapsed ? "justify-center px-2 py-2" : "px-3 py-2",
                   isActive
                     ? "bg-brand-teal/10 text-brand-teal border border-brand-teal/30"
                     : "text-gray-300 hover:text-white hover:bg-brand-gray/50"
                 )}
               >
                 <span>{link.icon}</span>
-                {link.label}
+                {!collapsed && link.label}
               </Link>
             );
           })}
@@ -52,17 +82,25 @@ export default function MemberSidebar() {
         <div className="mt-8 pt-4 border-t border-brand-gray space-y-2">
           <Link
             href="/"
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-brand-gray/50 transition"
+            title={collapsed ? "Back to Store" : undefined}
+            className={cn(
+              "flex items-center gap-3 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-brand-gray/50 transition",
+              collapsed ? "justify-center px-2 py-2" : "px-3 py-2"
+            )}
           >
             <span>🏪</span>
-            Back to Store
+            {!collapsed && "Back to Store"}
           </Link>
           <button
             onClick={() => signOut({ callbackUrl: "/members/login" })}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-red-400 hover:bg-brand-gray/50 transition w-full"
+            title={collapsed ? "Sign Out" : undefined}
+            className={cn(
+              "flex items-center gap-3 rounded-lg text-sm text-gray-400 hover:text-red-400 hover:bg-brand-gray/50 transition w-full",
+              collapsed ? "justify-center px-2 py-2" : "px-3 py-2"
+            )}
           >
             <span>🚪</span>
-            Sign Out
+            {!collapsed && "Sign Out"}
           </button>
         </div>
       </div>

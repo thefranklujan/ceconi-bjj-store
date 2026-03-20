@@ -99,11 +99,14 @@ export default async function MemberSchedulePage({
                           {formatTime(cls.startTime)} - {formatTime(cls.endTime)}
                         </div>
                         <div>
-                          <p className="text-white font-medium">
+                          <p className="text-white font-medium capitalize">
                             {cls.classType}
                           </p>
                           <p className="text-gray-500 text-sm">
                             {cls.instructor}
+                            {cls.topic && (
+                              <span className="text-brand-teal/70"> · {cls.topic}</span>
+                            )}
                           </p>
                         </div>
                       </div>

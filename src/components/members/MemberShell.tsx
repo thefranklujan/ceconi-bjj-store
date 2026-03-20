@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import MemberSidebar from "@/components/layout/MemberSidebar";
 import MemberMobileNav from "@/components/layout/MemberMobileNav";
+import AutoRefreshIndicator from "@/components/members/AutoRefreshIndicator";
 
 export default async function MemberShell({
   children,
@@ -21,6 +22,7 @@ export default async function MemberShell({
         <MemberMobileNav />
         <div className="p-4 sm:p-6 lg:p-8">{children}</div>
       </div>
+      <AutoRefreshIndicator />
     </div>
   );
 }
