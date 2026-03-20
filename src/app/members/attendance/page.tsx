@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import MemberShell from "@/components/members/MemberShell";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -73,30 +74,30 @@ export default async function MemberAttendancePage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-          <div className="bg-brand-dark border border-brand-gray rounded-lg p-6">
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1">
+          <a href="#recent-classes" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Total Classes
             </p>
             <p className="text-3xl font-bold text-brand-teal">{totalCount}</p>
-          </div>
-          <div className="bg-brand-dark border border-brand-gray rounded-lg p-6">
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1">
+          </a>
+          <a href="#recent-classes" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               This Month
             </p>
             <p className="text-3xl font-bold text-white">{monthlyCount}</p>
-          </div>
-          <div className="bg-brand-dark border border-brand-gray rounded-lg p-6">
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1">
+          </a>
+          <Link href="/members/leaderboard" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Week Streak
             </p>
             <p className="text-3xl font-bold text-brand-teal">
               {streak} {streak === 1 ? "week" : "weeks"}
             </p>
-          </div>
+          </Link>
         </div>
 
         {/* Attendance List */}
-        <div className="bg-brand-dark border border-brand-gray rounded-lg overflow-hidden">
+        <div id="recent-classes" className="bg-brand-dark border border-brand-gray rounded-lg overflow-hidden scroll-mt-24">
           <div className="px-6 py-4 border-b border-brand-gray">
             <h2 className="text-lg font-semibold text-white uppercase tracking-wider">
               Recent Classes

@@ -33,33 +33,35 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
-              Home
-            </Link>
-            <Link href="/products" className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
-              Shop
-            </Link>
-            <div className="relative group">
-              <button className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
-                Categories
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-brand-dark border border-brand-gray rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                <div className="py-2">
-                  {categories.map((cat) => (
-                    <Link
-                      key={cat}
-                      href={`/categories/${cat.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="block px-4 py-2 text-sm text-gray-300 hover:text-brand-teal hover:bg-brand-gray/50 transition"
-                    >
-                      {cat}
-                    </Link>
-                  ))}
+          {/* Desktop Nav — hidden inside member portal */}
+          {!inMemberPortal && (
+            <div className="hidden md:flex items-center gap-8">
+              <Link href="/" className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
+                Home
+              </Link>
+              <Link href="/products" className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
+                Shop
+              </Link>
+              <div className="relative group">
+                <button className="text-sm font-medium text-gray-300 hover:text-brand-teal transition uppercase tracking-wider">
+                  Categories
+                </button>
+                <div className="absolute top-full left-0 mt-2 w-48 bg-brand-dark border border-brand-gray rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  <div className="py-2">
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat}
+                        href={`/categories/${cat.toLowerCase().replace(/\s+/g, "-")}`}
+                        className="block px-4 py-2 text-sm text-gray-300 hover:text-brand-teal hover:bg-brand-gray/50 transition"
+                      >
+                        {cat}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Right side: Cart + Member Login (hidden in member portal) */}
           <div className="flex items-center gap-3">

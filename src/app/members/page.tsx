@@ -86,30 +86,30 @@ export default async function MemberDashboardPage() {
 
         {/* Stats Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-brand-dark border border-brand-gray rounded-lg p-6">
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1">
+          <Link href="/members/attendance" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Classes This Month
             </p>
             <p className="text-3xl font-bold text-brand-teal">
               {monthlyAttendance}
             </p>
-          </div>
-          <div className="bg-brand-dark border border-brand-gray rounded-lg p-6">
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1">
+          </Link>
+          <Link href="/members/progress" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Current Belt
             </p>
             <p className="text-3xl font-bold text-white capitalize">
               {member?.beltRank || "White"}
             </p>
-          </div>
-          <div className="bg-brand-dark border border-brand-gray rounded-lg p-6">
-            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1">
+          </Link>
+          <Link href="/members/progress" className="bg-brand-dark border border-brand-gray rounded-lg p-6 hover:border-brand-teal transition group cursor-pointer">
+            <p className="text-sm text-gray-400 uppercase tracking-wider mb-1 group-hover:text-gray-300 transition">
               Stripes
             </p>
             <p className="text-3xl font-bold text-brand-teal">
               {member?.stripes || 0}
             </p>
-          </div>
+          </Link>
         </div>
 
         {/* Today's Schedule */}
